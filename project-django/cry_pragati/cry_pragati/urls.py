@@ -20,6 +20,10 @@ from usermodel import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^CarBrandlist/',views.CarBrand.as_view()),
-    url(r'^CarBrandlist/(?P<brand_id>[0-9])/',views.CarBrand.as_view()),
-]
+    url(r'^carbrandlist/$',views.CarBrand.as_view()),#for list of all the car brand and adding a new brand
+    url(r'^carbrandlist/(?P<pk>[0-9]+)/$',views.CarBrandDetails.as_view()), # view a particular car brand
+    url(r'^carbrandlist/search/(?P<alpha_bet>\w+)/$',views.FetchCar.as_view()),
+    url(r'^employeedetails/$',views.Employeesdetails.as_view()),
+    url(r'^snippet_list/$',views.Snippet_list.as_view()),
+
+ ]
