@@ -34,7 +34,6 @@ class SnippetSerializerA(serializers.Serializer):# SnippetSerializer using 'seri
 class SnippetSerializerB(serializers.ModelSerializer):# SnippetSerializer using 'ModelSerializer'
     class Meta:
         model = Snippet
-        fields = ['id', 'title', 'code', 'linenos', 'language', 'style']
 
 
 
@@ -46,14 +45,32 @@ class CarBrandsSerializer(serializers.ModelSerializer):
         model=CarBrands
         fields='__all__'
 
-#creating serializer for  Employees and EmployeeDesignations
-class EmployeeSerializer(serializers.ModelSerializer):
+#creating serializer for list of all the names of employee in  Employees Model
+class EmployeeNameSerializer(serializers.ModelSerializer):
     class Meta:
         model=Employees
-        fields='__all__'
-
-class EmployeeDesignationsSerializer(serializers.ModelSerializer):
-    Employee=EmployeeSerializer()
+        fields=["employee_name"]
+#creating a serialzer for getting  details of all the employees
+class EmpDetailSerializer(serializers.ModelSerializer):
+    designations=serializers.SlugRelatedField(slug_field="designation_name",read_only=True)
     class Meta:
-        model=EmployeeDesignations
-        fields='__all__'
+        model=Employees
+        fields="__all__"
+
+
+class EmployeeDesignationsSerializer(serializers.Serializer):
+    designation_name = serializers.CharField(required=True, allow_blank=False, max_length=100)
+   
+    def create(self,validate_data):
+
+        '''create and return a new Snippet'''
+        return EmployeeDesignations.objects.create(**validate_data)
+    
+
+    def update(self,instance,validate_data):
+        ''' Update and return an existing snippet'''
+        instance.designation_name = validated_data.get('designaion_name', instance.designation_name)
+        instance.save()
+        return instance
+
+

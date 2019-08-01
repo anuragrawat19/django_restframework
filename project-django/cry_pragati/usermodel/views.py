@@ -6,7 +6,7 @@ from rest_framework.views import APIView#importing a APIView class based views f
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer #for serializing the objects into json form
 from rest_framework.parsers import JSONParser
-from .serializer import CarBrandsSerializer,EmployeeSerializer, EmployeeDesignationsSerializer,SnippetSerializerA,SnippetSerializerB # importing the serializer for each models
+from .serializer import * # importing the serializer for each models
 from rest_framework.decorators import api_view
 
 # Create your views here.
@@ -57,37 +57,51 @@ class CarBrandDetails(APIView):
 
 class FetchCar(APIView):
     def get(self,request,alpha_bet):
-        try:
-            car=CarBrands.objects.filter(brandname__icontains=alpha_bet)
-        except CarBrands.DoesNotExist:
+        car=CarBrands.objects.filter(brandname__icontains=alpha_bet)
+        if len(car)==0:
             return Response({"sdsdf":"No such car brand is available"})
-        serializer_class=CarBrandsSerializer(car,many=True)
-        return  Response(serializer_class.data)
+        else:
+            serializer_class=CarBrandsSerializer(car,many=True)
+            return  Response(serializer_class.data)
     
 
+class Employeeslist(APIView):
+    def get(self,request):
+        Employee=Employees.objects.all()
+        serialize_class=EmployeeNameSerializer(Employee,many=True)
+        return Response(serialize_class.data)
 
-# @api_view(['GET','PUT'])
-# def brand_details(request,pk):
-#     try:
-#         brand_details=CarBrands.objects.get(pk=pk)
-#     except CarBrands.DoesNotExist:
-#         return Response({"status":"HTTP_404_NOT_FOUND"})
-#     if request.method=='GET': #for getting a details of a particular car brand 
-#         serializer_class=CarBrandsSerializer(brand_details)
-#         return Response(serializer_class.data )
-#     elif request.method=='PUT': # for updating  the details of an existing  car brand
-#         serializer=CarBrandsSerializer(brand_details,data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response({"carbrand id {} successfully updated. ".format(pk)},status=204)
-#         else:
-#             return Response({"error status: carbrand id {} did not updated".format(pk)})
-
-
-
-class Employeesdetails(APIView):
+class Employeesdetails(APIView): #view for the employees details and  for adding a new employee
     def get (self,request):
         Employee=Employees.objects.all()
-        serialize_class=EmployeeSerializer(Employee,many=True)
-        return(Response(serialize_class.data))
+        serialize_class=EmpDetailSerializer(Employee,many=True)
+        return Response(serialize_class.data)
+    
+    def post(self,request):
+        serializer_class=EmpDetailSerializer(data=request.data)
+        if serializer_class.is_valid():
+            serializer_class.save()
+            return Response("New employee {} is added".format(serializer_class.data["employee_name"]))
+        else:
+            return Response({"status":0,"error-message":"data is not valid"})
+
+class DesignationList(APIView): #view for the list of all the designation and  for adding a new employee designation
+    def get(self,request):
+        desination=EmployeeDesignations.objects.values("designation_name").distinct()
+        serialize_class=EmployeeDesignationsSerializer(desination,many=True)
+        return Response({"list of all the designations that this company has":serialize_class.data})
+    
+    def post(self,request):
+        serializer_class=EmployeeDesignationsSerializer(data=request.data)
+        if serializer_class.is_valid():
+            serializer_class.save()
+            return Response("New designation {} is added".format(serializer_class.data["designation"]))
+
+        # designation_id=request.data.get("designation")
+        # designation=request.data.get("designation_name")
+        # new_designation=EmployeeDesignations.objects.create(designation_id=designation_id,designation=designation)
+
+      
+
+
 

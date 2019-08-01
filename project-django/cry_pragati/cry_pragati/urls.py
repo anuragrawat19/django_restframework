@@ -23,7 +23,9 @@ urlpatterns = [
     url(r'^carbrandlist/$',views.CarBrand.as_view()),#for list of all the car brand and adding a new brand
     url(r'^carbrandlist/(?P<pk>[0-9]+)/$',views.CarBrandDetails.as_view()), # view a particular car brand
     url(r'^carbrandlist/search/(?P<alpha_bet>\w+)/$',views.FetchCar.as_view()),
-    url(r'^employeedetails/$',views.Employeesdetails.as_view()),
+    url(r'^employees_list/$',views.Employeeslist.as_view()),
+    url(r'^employees_details/$',views.Employeesdetails.as_view()),
+    url(r'^designations_list/$',views.DesignationList.as_view()),
     url(r'^snippet_list/$',views.Snippet_list.as_view()),
 
  ]

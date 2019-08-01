@@ -18,8 +18,8 @@ class Snippet(models.Model):
     language=models.CharField(choices=LANGUAGE_CHOICES,default="python",max_length=100)
     style=models.CharField(choices=STYLE_CHOICES,default="friendly",max_length=100)
 
-    def _str__(self):
-        return self.language
+    def __str__(self):
+        return self.title
 
     class Meta:
         ordering=['created']
@@ -72,7 +72,7 @@ class EmployeeDesignations(models.Model):
 
     class Meta:
         db_table="employeedesignation"
-        verbose_name_plural="EmployeeDesinations"
+        verbose_name_plural="EmployeeDesignations"
 
     def __str__(self):
         return "%s "%self.designation_name
