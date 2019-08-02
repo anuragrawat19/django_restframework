@@ -19,12 +19,30 @@ class Snippet_list(APIView):
         return Response({"Snippet_details":seriliazer_class.data})
     
     def post(self,request):#for adding a snippet
-        seriliazer_class=SnippetSerializerB(data=request.data)
+        seriliazer_class=SnippetSerializerA(data=request.data)
         if seriliazer_class.is_valid():
             seriliazer_class.save()
             return Response({"status":"snippet sucessfully created"},status=201)
         else:
-            return Response({"status":"snippet creation failed"},status=401)
+            return Response(seriliazer_class.errors)
+    def put(self,request,pk):
+        snippet=Snippet.objects.get(pk=pk)
+        serializer_class=SnippetSerializerA(snippet,request.data)
+        if serializer_class.is_valid():
+            serializer_class.save()
+            return Response("existing snipet of id {} is modified".format(serializer_class.data["id"]))
+        else:
+            return Response(serializer_class.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self,request,pk):
+        try:
+            snippet=Snippet.objects.get(pk=pk)
+            snippet.delete()
+            return Response("snnipet with id {} is deleted".format(pk))
+        except Snippet.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+
         
 
 
@@ -79,11 +97,11 @@ class Employeesdetails(APIView): #view for the employees details and  for adding
     
     def post(self,request):
         serializer_class=EmpDetailSerializer(data=request.data)
-        if serializer_class.is_valid():
+        if serializer_class.is_valid(raise_exception=True):
             serializer_class.save()
             return Response("New employee {} is added".format(serializer_class.data["employee_name"]))
         else:
-            return Response({"status":0,"error-message":"data is not valid"})
+            return Response(serializer_class.errors,status=status.HTTP_400_BAD_REQUEST)
 
 class DesignationList(APIView): #view for the list of all the designation and  for adding a new employee designation
     def get(self,request):

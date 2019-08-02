@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^employees_details/$',views.Employeesdetails.as_view()),
     url(r'^designations_list/$',views.DesignationList.as_view()),
     url(r'^snippet_list/$',views.Snippet_list.as_view()),
+    url(r'^snippet_list/(?P<pk>[0-9]+)/$',views.Snippet_list.as_view()),
 
  ]
