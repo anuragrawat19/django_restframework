@@ -1,5 +1,16 @@
 from django.contrib import admin
-from usermodel.models import Roles,UserRoles,CarBrands,Employees,EmployeeDesignations,Students,Sports,Snippet
+from usermodel.models import (
+    Roles, 
+    UserRoles, 
+    CarBrands, 
+    Employees, 
+    EmployeeDesignations, 
+    Students, 
+    Sports, 
+    Snippet, 
+    Persons, 
+    PersonTasks
+)
 
 # Register your models here.
 admin.site.register(Roles)
@@ -10,3 +21,5 @@ admin.site.register(EmployeeDesignations)
 admin.site.register(Students)
 admin.site.register(Sports)
 admin.site.register(Snippet)
+admin.site.register(Persons)
+admin.site.register(PersonTasks)

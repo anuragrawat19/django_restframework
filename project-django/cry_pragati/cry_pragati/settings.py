@@ -80,11 +80,11 @@ WSGI_APPLICATION = 'cry_pragati.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'childrights',
-        'USER':'cry_live',
-        'PASSWORD':'cry_live',
-        'HOST':'localhost',
-        'PORT':'',
+        'NAME': 'cry_live',
+        'USER': 'cry_live',
+        'PASSWORD': 'cry_live',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -92,9 +92,9 @@ DATABASES = {
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE':5
-    
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5
+
 }
 
 # Password validation
